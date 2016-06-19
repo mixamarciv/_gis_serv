@@ -1,6 +1,9 @@
 src/
 pkg/
 files/result/
+temp/
+temp_asyncreq/
+
 *.exe
 
 #############

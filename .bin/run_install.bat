@@ -23,7 +23,13 @@ go get -u github.com/nakagami/firebirdsql
 ::go get -u "github.com/palantir/stacktrace"
 ::go get -u "github.com/gosuri/uilive"
 ::"github.com/mixamarciv/gofncstd3000"
+
+::библиотека для работы с XMLками
+go get -u "github.com/jteeuwen/go-pkg-xmlx"
+
 go install
+
+
 
 @echo ==== end ======================================================================
 @PAUSE
