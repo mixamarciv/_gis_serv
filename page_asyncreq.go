@@ -131,6 +131,7 @@ func post_asyncreq(w http.ResponseWriter, r *http.Request) {
 		if checkErrorJSON("xmlx.LoadString error", err, w) {
 			return
 		}
+		/************
 		node := doc.SelectNode("*", "Envelope")
 		if node == nil {
 			checkErrorJSON(`doc.SelectNode("*", "Envelope") error`, errors.New("node == nil"), w)
@@ -146,8 +147,8 @@ func post_asyncreq(w http.ResponseWriter, r *http.Request) {
 			checkErrorJSON(`doc.SelectNode("*", "RequestHeader") error`, errors.New("node == nil"), w)
 			return
 		}
-
-		senderid = node.S("*", "SenderID")
+		***********/
+		senderid = doc.SelectNode("*", "Header").S("*", "SenderID")
 		fmt.Printf("senderid = %s\n", senderid)
 	}
 	datetime := mf.CurTimeStrShort()
@@ -189,29 +190,7 @@ func post_asyncreq(w http.ResponseWriter, r *http.Request) {
 		if checkErrorJSON("xmlx.LoadString(sendquery.respbody) error", err, w) {
 			return
 		}
-		node := doc.SelectNode("*", "Envelope")
-		if node == nil {
-			checkErrorJSON(`doc.SelectNode("*", "Envelope") error`, errors.New("node == nil"), w)
-			return
-		}
-		node = node.SelectNode("*", "Body")
-		if node == nil {
-			checkErrorJSON(`doc.SelectNode("*", "Body") error`, errors.New("node == nil"), w)
-			return
-		}
-		node = doc.SelectNode("*", "AckRequest")
-		if node == nil {
-			checkErrorJSON(`doc.SelectNode("*", "AckRequest") error`, errors.New("node == nil"), w)
-			return
-		}
-		node = doc.SelectNode("*", "Ack")
-		if node == nil {
-			checkErrorJSON(`doc.SelectNode("*", "Ack") error`, errors.New("node == nil"), w)
-			return
-		}
-
-		//messageguid = node.S("*", "RequesterMessageGUID")
-		messageguid = node.S("*", "MessageGUID")
+		messageguid = doc.SelectNode("*", "Body").S("*", "MessageGUID")
 		fmt.Printf("messageguid = %s\n", messageguid)
 	}
 
@@ -352,6 +331,7 @@ func check_requeststate_in_xml(xml string) string {
 	if err != nil {
 		return `ERROR: doc.LoadString(xml, nil)`
 	}
+	/*********
 	node := doc.SelectNode("*", "Envelope")
 	if node == nil {
 		return `ERROR: doc.SelectNode("*", "Envelope")`
@@ -364,7 +344,8 @@ func check_requeststate_in_xml(xml string) string {
 	if node == nil {
 		return `ERROR: node.SelectNode("*", "getStateResult")`
 	}
-	state := node.S("*", "RequestState")
+	************/
+	state := doc.SelectNode("*", "Body").S("*", "RequestState")
 	return state
 }
 
